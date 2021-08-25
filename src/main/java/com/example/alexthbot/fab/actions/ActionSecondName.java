@@ -2,10 +2,9 @@ package com.example.alexthbot.fab.actions;
 
 import com.example.alexthbot.fab.actions.parent.Action;
 import com.example.alexthbot.fab.actions.router.ActionEnum;
-import com.example.alexthbot.fab.actions.router.Role;
-import com.example.alexthbot.fab.database.user.model.BotUser;
 import com.example.alexthbot.fab.database.user.service.BotUserService;
-import com.example.alexthbot.fab.exeptions.RoleNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -19,41 +18,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ActionChoseRole extends Action {
-
+public class ActionSecondName extends Action {
+    @Autowired
+    @Qualifier("doctors")
+    private List<String> doctors;
+    @Autowired
+    BotUserService botUserService;
     @Override
     public void action(Update update, AbsSender absSender) {
-        Role role = null;
+        String id = update.getMessage().getChatId().toString();
+        String name = update.getMessage().getText();
 
+        botUserService.setSecondName(id, name);
+        botUserService.setCommand(id, ActionEnum.CHOOSE_DOCTOR);
         SendMessage sendMessage = new SendMessage();
-        String chatId = update.getMessage().getChatId().toString();
-        sendMessage.setChatId(chatId);
-        try {
-            role = Role.interpret(update.getMessage().getText());
-            sendMessage.setText("Роль успешно сохранена.\nВыберите действие, которые хотите сделать далее.");
-            BotUser user = botUserService.user(chatId);
-            user.setRole(role);
-            user.setCommand(null);
-            botUserService.saveUser(chatId, user);
-            sendMessage.setReplyMarkup(getKeyboard());
-        } catch (RoleNotFoundException e) {
-            sendMessage.setText("Роль указана неверно!");
-        }
-
-
-
+        sendMessage.setChatId(id);
+        sendMessage.setText("Вы зарегистрированы как: Имя - " + botUserService.getFirstName(id) +", Фамилия - " + botUserService.getSecondName(id));
+        sendMessage.setText("Выберите нужного доктора: ");
+        sendMessage.setReplyMarkup(keyboard());
         try {
             absSender.execute(sendMessage);
-        } catch (TelegramApiException e) {
+        } catch (
+                TelegramApiException e) {
             e.printStackTrace();
         }
 
     }
-
-    public ReplyKeyboard getKeyboard() {
+    @Override
+    public ReplyKeyboard keyboard() {
         KeyboardRow keyboardRow = new KeyboardRow();
-        keyboardRow.add("Логин");
-        keyboardRow.add("Регистрация");
+        doctors.forEach(keyboardRow::add);
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         keyboardRows.add(keyboardRow);
@@ -63,9 +57,11 @@ public class ActionChoseRole extends Action {
         replyKeyboardMarkup.setResizeKeyboard(true);
         return replyKeyboardMarkup;
     }
-
     @Override
     public ActionEnum getKey() {
-        return ActionEnum.CHOSE_ROLE;
+        return ActionEnum.CHOOSE_LAST_NAME;
     }
+
+
+
 }

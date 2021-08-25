@@ -6,8 +6,8 @@ import com.google.common.cache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 @Service
 public class BotUserService {
@@ -19,6 +19,14 @@ public class BotUserService {
         changeUser(chatId,botUser -> botUser.setCommand(actionEnum.getCommand()));
     }
 
+    public void setFirstName(String chatId, String name){
+        changeUser(chatId,botUser -> botUser.setFirstName(name));
+    }
+
+    public void setSecondName(String chatId, String secondName){
+        changeUser(chatId,botUser -> botUser.setSecondName(secondName));
+    }
+
     public void setLogin(String chatId, String login){
         changeUser(chatId,botUser -> botUser.setLogin(login));
     }
@@ -27,11 +35,11 @@ public class BotUserService {
         changeUser(chatId,botUser -> botUser.setPassword(password));
     }
 
-    private BotUser user(String chatId){
+    public BotUser user(String chatId){
         return cache.getIfPresent(chatId);
     }
 
-    private void saveUser (String chatId , BotUser botUser){
+    public void saveUser (String chatId , BotUser botUser){
         cache.put(chatId,botUser);
     }
 
@@ -39,5 +47,13 @@ public class BotUserService {
         BotUser botUser = user(chatId);
         action.accept(botUser);
         saveUser(chatId,botUser);
+    }
+
+    public String getFirstName(String chatId){
+        return Objects.requireNonNull(cache.getIfPresent(chatId)).getFirstName();
+    }
+
+    public String getSecondName(String chatId){
+        return Objects.requireNonNull(cache.getIfPresent(chatId)).getSecondName();
     }
 }

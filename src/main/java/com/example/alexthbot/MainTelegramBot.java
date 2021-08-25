@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.bots.TelegramWebhookBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@Data
 @Component
 public class MainTelegramBot extends TelegramLongPollingBot {
+
+
 
     @Value("${telegram.bot.name}")
     private String name;
@@ -60,11 +63,9 @@ public class MainTelegramBot extends TelegramLongPollingBot {
                 System.out.println(command);
                 final ActionEnum action = ActionEnum.interpret(command);
                 router.get(action).action(update,this);
-
             }
         }
         if (update.hasCallbackQuery()){
-
         }
     }
 
