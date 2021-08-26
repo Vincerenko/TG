@@ -2,7 +2,6 @@ package com.example.alexthbot.fab.actions;
 
 import com.example.alexthbot.fab.actions.parent.Action;
 import com.example.alexthbot.fab.actions.router.ActionEnum;
-import com.example.alexthbot.fab.database.user.model.BotUser;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;

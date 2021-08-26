@@ -43,7 +43,7 @@ public class PostgreSqlConfiguration {
     @Bean(name = "mainJpaModelPaths")
     public String[] jpaModelPaths() {
         return new String[]{
-                "com.example.alexthbot.fab.database.model"
+                "com.example.alexthbot.fab.database.user.model"
 
         };
     }
@@ -60,7 +60,7 @@ public class PostgreSqlConfiguration {
     @Bean(name = "mainJpaProperties")
     public Properties jpaProperties() {
         Properties properties = new Properties();
-        properties.put(AvailableSettings.HBM2DDL_AUTO, getDDL(SchemaAutoTooling.CREATE));
+        properties.put(AvailableSettings.HBM2DDL_AUTO, getDDL(SchemaAutoTooling.CREATE_DROP));
         return properties;
     }
 

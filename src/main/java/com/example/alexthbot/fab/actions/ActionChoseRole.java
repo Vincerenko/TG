@@ -4,7 +4,6 @@ import com.example.alexthbot.fab.actions.parent.Action;
 import com.example.alexthbot.fab.actions.router.ActionEnum;
 import com.example.alexthbot.fab.actions.router.Role;
 import com.example.alexthbot.fab.database.user.model.BotUser;
-import com.example.alexthbot.fab.database.user.service.BotUserService;
 import com.example.alexthbot.fab.exeptions.RoleNotFoundException;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

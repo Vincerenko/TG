@@ -2,6 +2,7 @@ package com.example.alexthbot.fab.actions;
 
 import com.example.alexthbot.fab.actions.parent.Action;
 import com.example.alexthbot.fab.actions.router.ActionEnum;
+import com.example.alexthbot.fab.database.repository.BotUserRepository;
 import com.example.alexthbot.fab.database.user.service.BotUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,6 +25,8 @@ public class ActionSecondName extends Action {
     private List<String> doctors;
     @Autowired
     BotUserService botUserService;
+    @Autowired
+    private BotUserRepository botUserRepository;
     @Override
     public void action(Update update, AbsSender absSender) {
         String id = update.getMessage().getChatId().toString();
@@ -31,10 +34,10 @@ public class ActionSecondName extends Action {
 
         botUserService.setSecondName(id, name);
         botUserService.setCommand(id, ActionEnum.CHOOSE_DOCTOR);
+        botUserRepository.save(botUserService.user(id));
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(id);
-        sendMessage.setText("Вы зарегистрированы как: Имя - " + botUserService.getFirstName(id) +", Фамилия - " + botUserService.getSecondName(id));
-        sendMessage.setText("Выберите нужного доктора: ");
+        sendMessage.setText("Вы зарегистрированы как: Имя - " + botUserService.getFirstName(id) +", Фамилия - " + botUserService.getSecondName(id) + "\n Теперь выберите нужного доктора: ");
         sendMessage.setReplyMarkup(keyboard());
         try {
             absSender.execute(sendMessage);
