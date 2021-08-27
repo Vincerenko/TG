@@ -9,8 +9,11 @@ public enum ActionEnum {
     REGISTRATION_WAITING_LOGIN("/wait login"),
     REGISTRATION_WAITING_PASSWORD("/wait password"),
     CHOOSE_DOCTOR("/choose doctor"),
+    CHOOSE_PROCEDURE("/choose procedure"),
+    CHOOSE_TIME("/choose time"),
     CHOOSE_FIRST_NAME("/choose first name"),
     CHOOSE_LAST_NAME("/choose last name"),
+    CHOOSE_DATE("/choose date"),
     ANY(null);
 
     private String command;
@@ -38,6 +41,10 @@ public enum ActionEnum {
         if (REGISTRATION_WAITING_PASSWORD.command.equals(value)) return REGISTRATION_WAITING_PASSWORD;
         if (CHOOSE_FIRST_NAME.command.equals(value)) return CHOOSE_FIRST_NAME;
         if (CHOOSE_LAST_NAME.command.equals(value)) return CHOOSE_LAST_NAME;
+        if (CHOOSE_PROCEDURE.command.equals(value)) return CHOOSE_PROCEDURE;
+        if (CHOOSE_TIME.command.equals(value)) return CHOOSE_TIME;
+        if (CHOOSE_DOCTOR.command.equals(value)) return CHOOSE_DOCTOR;
+        if (CHOOSE_DATE.command.equals(value)) return CHOOSE_DATE;
 
         return ANY;
     }

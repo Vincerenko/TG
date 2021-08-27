@@ -17,29 +17,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ActionChooseDoctor extends Action {
+public class ActionChooseProcedure extends Action {
     @Autowired
     BotAppointment botAppointment;
 
     @Override
     public void action(Update update, AbsSender absSender) {
-        String id = update.getMessage().getChatId().toString();
-        String text = update.getMessage().getText();
+    String id = update.getMessage().getChatId().toString();
+    String text = update.getMessage().getText();
+        if (text.equals("Консультация (1час)")) {
+            botAppointment.setProcedure(text);
+            botAppointment.setDuration("1 час");
+        }
         botAppointment.setDoctor(text);
+        botAppointment.setDuration("Назначает врач");
+
 
         botUserService.setCommand(id, ActionEnum.CHOOSE_DATE);
 
-        SendMessage sendMessage = new SendMessage();
+    SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(id);
         sendMessage.setText("Выберите процедуру: \n(В первый раз советуем выбрать консультацию)");
         sendMessage.setReplyMarkup(keyboard());
         try {
-            absSender.execute(sendMessage);
-        } catch (
-                TelegramApiException e) {
-            e.printStackTrace();
-        }
+        absSender.execute(sendMessage);
+    } catch (
+    TelegramApiException e) {
+        e.printStackTrace();
     }
+}
 
     public ReplyKeyboard keyboard() {
         KeyboardRow keyboardRow = new KeyboardRow();
@@ -59,6 +65,8 @@ public class ActionChooseDoctor extends Action {
 
     @Override
     public ActionEnum getKey() {
-        return ActionEnum.CHOOSE_DOCTOR;
+        return ActionEnum.CHOOSE_PROCEDURE;
     }
 }
+
+
