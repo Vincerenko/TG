@@ -2,10 +2,6 @@ package com.example.alexthbot.fab.actions;
 
 import com.example.alexthbot.fab.actions.parent.Action;
 import com.example.alexthbot.fab.actions.router.ActionEnum;
-import com.example.alexthbot.fab.configuration.ConfigurationAppointment;
-import com.example.alexthbot.fab.database.repository.BotAppointmentRepository;
-import com.example.alexthbot.fab.database.user.model.BotAppointment;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -19,29 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ActionChooseTime extends Action {
-    @Autowired
-    BotAppointment botAppointment;
-    @Autowired
-    BotAppointmentRepository botAppointmentRepository;
-    @Autowired
-    ConfigurationAppointment configurationAppointment;
+public class ActionChooseProcedureDrags extends Action {
     @Override
     public void action(Update update, AbsSender absSender) {
         String id = update.getMessage().getChatId().toString();
         String text = update.getMessage().getText();
 
-        botAppointment.setDate(text);
-        botAppointmentRepository.save(botAppointment);
-        //configurationAppointment.appointmentList.add(botAppointment);
 
 
-
-        botUserService.setCommand(id, ActionEnum.MIDDLE_BOOKED);
+        botUserService.setCommand(id, ActionEnum.CHOOSE_DATE);
 
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(id);
-        sendMessage.setText("Выберите время:");
+        sendMessage.setText("Выберите процедуру: \n(В первый раз советуем выбрать консультацию)");
         sendMessage.setReplyMarkup(keyboard());
         try {
             absSender.execute(sendMessage);
@@ -53,10 +39,10 @@ public class ActionChooseTime extends Action {
 
     public ReplyKeyboard keyboard() {
         KeyboardRow keyboardRow = new KeyboardRow();
-        keyboardRow.add("08:00");
-        keyboardRow.add("10:00");
-        keyboardRow.add("12:00");
-        keyboardRow.add("14:00");
+        keyboardRow.add("Консультация (1час)");
+        keyboardRow.add("Бросить курить");
+        keyboardRow.add("Бросить пить");
+        keyboardRow.add("Лечение игромании");
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         keyboardRows.add(keyboardRow);
@@ -67,8 +53,9 @@ public class ActionChooseTime extends Action {
         return replyKeyboardMarkup;
     }
 
+
     @Override
     public ActionEnum getKey() {
-        return ActionEnum.CHOOSE_TIME;
+        return ActionEnum.CHOOSE_PROCEDURE_DRAGS;
     }
 }

@@ -12,6 +12,5 @@ public class TelegramBotDataConfiguration {
     @Bean("doctors")
     public List<String> getDoctors() {
         return Arrays.asList("Врач травматолог", "Врач уролог", "Врач хирург", "Зубной техник", "Врач нарколог");
-
     }
 }

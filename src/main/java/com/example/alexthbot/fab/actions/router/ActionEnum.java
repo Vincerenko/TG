@@ -9,12 +9,14 @@ public enum ActionEnum {
     REGISTRATION_WAITING_LOGIN("/wait login"),
     REGISTRATION_WAITING_PASSWORD("/wait password"),
     CHOOSE_DOCTOR("/choose doctor"),
-    CHOOSE_PROCEDURE("/choose procedure"),
+    CHOOSE_PROCEDURE_TOOTH("/choose procedure tooth"),
+    CHOOSE_PROCEDURE_DRAGS("/choose procedure drags"),
     CHOOSE_TIME("/choose time"),
     CHOOSE_FIRST_NAME("/choose first name"),
     CHOOSE_LAST_NAME("/choose last name"),
     CHOOSE_DATE("/choose date"),
-    BOOKED("/booked"),
+    MIDDLE_BOOKED("/middle_booked"),
+    SHOW_APPOINTMENTS("/show_appointments"),
     ANY(null);
 
     private String command;
@@ -42,11 +44,13 @@ public enum ActionEnum {
         if (REGISTRATION_WAITING_PASSWORD.command.equals(value)) return REGISTRATION_WAITING_PASSWORD;
         if (CHOOSE_FIRST_NAME.command.equals(value)) return CHOOSE_FIRST_NAME;
         if (CHOOSE_LAST_NAME.command.equals(value)) return CHOOSE_LAST_NAME;
-        if (CHOOSE_PROCEDURE.command.equals(value)) return CHOOSE_PROCEDURE;
+        if (CHOOSE_PROCEDURE_TOOTH.command.equals(value)) return CHOOSE_PROCEDURE_TOOTH;
+        if (CHOOSE_PROCEDURE_DRAGS.command.equals(value)) return CHOOSE_PROCEDURE_DRAGS;
         if (CHOOSE_TIME.command.equals(value)) return CHOOSE_TIME;
         if (CHOOSE_DOCTOR.command.equals(value)) return CHOOSE_DOCTOR;
         if (CHOOSE_DATE.command.equals(value)) return CHOOSE_DATE;
-        if (BOOKED.command.equals(value)) return BOOKED;
+        if (MIDDLE_BOOKED.command.equals(value)) return MIDDLE_BOOKED;
+        if (SHOW_APPOINTMENTS.command.equals(value)) return SHOW_APPOINTMENTS;
 
         return ANY;
     }

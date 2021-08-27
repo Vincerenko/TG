@@ -2,10 +2,8 @@ package com.example.alexthbot.fab.actions;
 
 import com.example.alexthbot.fab.actions.parent.Action;
 import com.example.alexthbot.fab.actions.router.ActionEnum;
-import com.example.alexthbot.fab.database.repository.BotUserRepository;
-import com.example.alexthbot.fab.database.user.service.BotUserService;
+import com.example.alexthbot.fab.configuration.ConfigurationAppointment;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -19,38 +17,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ActionSecondName extends Action {
+public class ActionShowAppointments extends Action {
     @Autowired
-    @Qualifier("doctors")
-    private List<String> doctors;
-    @Autowired
-    BotUserService botUserService;
-    @Autowired
-    private BotUserRepository botUserRepository;
+    ConfigurationAppointment configurationAppointment;
     @Override
     public void action(Update update, AbsSender absSender) {
+        String s = "";
         String id = update.getMessage().getChatId().toString();
-        String name = update.getMessage().getText();
-
-        botUserService.setSecondName(id, name);
-        botUserService.setCommand(id, ActionEnum.CHOOSE_DOCTOR);
-        botUserRepository.save(botUserService.user(id));
+        String text = update.getMessage().getText();
+        botUserService.setCommand(id, ActionEnum.CHOOSE_LAST_NAME);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(id);
-        sendMessage.setText("Вы зарегистрированы как: Имя - " + botUserService.getFirstName(id) +", Фамилия - " + botUserService.getSecondName(id) + "\n Теперь выберите нужного доктора: ");
+        sendMessage.setText("Ваша запись учтена, вы так же можете записаться к другому врачу.");
         sendMessage.setReplyMarkup(keyboard());
+        for (int i = 0; i < configurationAppointment.appointmentList.size(); i++) {
+            s+=
+                    "Ваша запись от "+configurationAppointment.appointmentList.get(i).getTimeBook()+ " числа"+ "\n"
+                            + "Доктор: " + configurationAppointment.appointmentList.get(i).getDoctor() + "\n"
+                            + "Кабинет: " + configurationAppointment.appointmentList.get(i).getNumberRoom() + "\n"
+                            + "Процедура: " + configurationAppointment.appointmentList.get(i).getProcedure() + "\n"
+                            + "День: " + configurationAppointment.appointmentList.get(i).getDate() + "\n"
+                            + "Время: " + configurationAppointment.appointmentList.get(i).getTime() + "\n"
+                            + "Длительность процедуры: " + configurationAppointment.appointmentList.get(i).getDuration() + "\n"
+                            + "\n"
+                    ;
+        }
+        sendMessage.setText(s);
         try {
             absSender.execute(sendMessage);
         } catch (
                 TelegramApiException e) {
             e.printStackTrace();
         }
-
     }
-    @Override
+
     public ReplyKeyboard keyboard() {
         KeyboardRow keyboardRow = new KeyboardRow();
-        doctors.forEach(keyboardRow::add);
+        keyboardRow.add("Записаться к другому врачу");
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         keyboardRows.add(keyboardRow);
@@ -62,9 +65,6 @@ public class ActionSecondName extends Action {
     }
     @Override
     public ActionEnum getKey() {
-        return ActionEnum.CHOOSE_LAST_NAME;
+        return ActionEnum.SHOW_APPOINTMENTS;
     }
-
-
-
 }

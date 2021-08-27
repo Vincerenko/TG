@@ -34,4 +34,6 @@ public class BotAppointment {
         this.numberRoom = numberRoom;
         this.timeBook = timeBook;
     }
+
+
 }
