@@ -6,35 +6,32 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Component
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class BotAppointment {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    @Column
     private String doctor;
-    @Column
     private String procedure;
-    @Column
     private String date;
-    @Column
     private String time;
-    @Column
     private String duration;
-    @Column
     private String numberRoom;
+    private String timeBook;
 
-
-    public BotAppointment(String doctor, String procedure, String date, String duration, String numberRoom) {
+    public BotAppointment(String doctor, String procedure, String date, String time, String duration, String numberRoom, String timeBook) {
         this.doctor = doctor;
         this.procedure = procedure;
         this.date = date;
+        this.time = time;
         this.duration = duration;
         this.numberRoom = numberRoom;
+        this.timeBook = timeBook;
     }
 }

@@ -14,6 +14,7 @@ public enum ActionEnum {
     CHOOSE_FIRST_NAME("/choose first name"),
     CHOOSE_LAST_NAME("/choose last name"),
     CHOOSE_DATE("/choose date"),
+    BOOKED("/booked"),
     ANY(null);
 
     private String command;
@@ -45,6 +46,7 @@ public enum ActionEnum {
         if (CHOOSE_TIME.command.equals(value)) return CHOOSE_TIME;
         if (CHOOSE_DOCTOR.command.equals(value)) return CHOOSE_DOCTOR;
         if (CHOOSE_DATE.command.equals(value)) return CHOOSE_DATE;
+        if (BOOKED.command.equals(value)) return BOOKED;
 
         return ANY;
     }

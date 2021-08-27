@@ -25,12 +25,7 @@ public class ActionChooseProcedure extends Action {
     public void action(Update update, AbsSender absSender) {
     String id = update.getMessage().getChatId().toString();
     String text = update.getMessage().getText();
-        if (text.equals("Консультация (1час)")) {
-            botAppointment.setProcedure(text);
-            botAppointment.setDuration("1 час");
-        }
-        botAppointment.setDoctor(text);
-        botAppointment.setDuration("Назначает врач");
+
 
 
         botUserService.setCommand(id, ActionEnum.CHOOSE_DATE);

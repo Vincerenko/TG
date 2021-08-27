@@ -26,6 +26,7 @@ public class ActionChooseDoctor extends Action {
         String id = update.getMessage().getChatId().toString();
         String text = update.getMessage().getText();
         botAppointment.setDoctor(text);
+        botAppointment.setNumberRoom("Кабинет 302");
 
         botUserService.setCommand(id, ActionEnum.CHOOSE_DATE);
 
