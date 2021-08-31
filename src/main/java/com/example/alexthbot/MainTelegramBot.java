@@ -4,16 +4,15 @@ import com.example.alexthbot.fab.actions.router.ActionEnum;
 import com.example.alexthbot.fab.actions.router.ActionRouter;
 import com.example.alexthbot.fab.database.user.model.BotUser;
 import com.google.common.cache.Cache;
-import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.bots.TelegramWebhookBot;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+@Slf4j
 @Component
 public class MainTelegramBot extends TelegramLongPollingBot {
 
@@ -60,7 +59,7 @@ public class MainTelegramBot extends TelegramLongPollingBot {
                     command = message.getText();
                 }
 
-                System.out.println(command);
+
                 final ActionEnum action = ActionEnum.interpret(command);
                 router.get(action).action(update,this);
             }
