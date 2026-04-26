@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+.turbo/
+*.tsbuildinfo
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Environment files (NEVER commit)
+.env
+.env.local
+.env.*.local
+
+# Mobile / Expo
+.expo/
+.expo-shared/
+mobile/ios/
+mobile/android/
+mobile/.eas/
+
+# EAS credentials (NEVER commit)
+mobile/credentials.json
+mobile/google-services.json
+mobile/GoogleService-Info.plist
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Prisma
+backend/prisma/migrations/dev.db*

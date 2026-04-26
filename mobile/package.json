@@ -1,0 +1,26 @@
+{
+  "name": "@etron/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts,.tsx"
+  },
+  "dependencies": {
+    "@etron/shared-types": "workspace:*",
+    "@noble/curves": "1.6.0",
+    "@noble/hashes": "1.5.0",
+    "@scure/base": "1.1.7",
+    "@scure/bip32": "1.4.0",
+    "@scure/bip39": "1.4.0"
+  },
+  "devDependencies": {
+    "typescript": "5.5.4",
+    "vitest": "2.0.5",
+    "@vitest/coverage-v8": "2.0.5",
+    "@types/node": "20.16.5"
+  }
+}
