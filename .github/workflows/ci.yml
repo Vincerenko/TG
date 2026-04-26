@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test with coverage
+        run: pnpm coverage
+
+      - name: Verify crypto coverage = 100%
+        run: |
+          node -e "
+            const r = require('./mobile/coverage/coverage-summary.json');
+            const files = Object.keys(r).filter(k => k.includes('/core/crypto/'));
+            if (files.length === 0) { console.error('no crypto files in coverage report'); process.exit(1); }
+            for (const f of files) {
+              const lines = r[f].lines.pct;
+              if (lines < 100) { console.error('FAIL', f, lines); process.exit(1); }
+            }
+            console.log('OK: crypto coverage 100% across', files.length, 'files');
+          "
